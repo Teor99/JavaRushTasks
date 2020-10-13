@@ -12,7 +12,7 @@ target/
 *.class
 #*.info
 *.properties
-*.jar
+#*.jar
 
 #/1.JavaSyntax/
 #/2.JavaCore/
