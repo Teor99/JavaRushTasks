@@ -7,6 +7,8 @@ public class RacerGame extends Game {
     public static final int HEIGHT = 64;
     public static final int CENTER_X = WIDTH / 2;
     public static final int ROADSIDE_WIDTH = 14;
+    private RoadMarking roadMarking;
+    private PlayerCar player;
 
     @Override
     public void initialize() {
@@ -23,11 +25,40 @@ public class RacerGame extends Game {
     }
 
     private void createGame() {
+        roadMarking = new RoadMarking();
+        player = new PlayerCar();
         drawScene();
+        setTurnTimer(40);
     }
 
     private void drawScene() {
         drawField();
+        roadMarking.draw(this);
+        player.draw(this);
+    }
+
+    private void moveAll() {
+        roadMarking.move(player.speed);
+        player.move();
+    }
+
+    @Override
+    public void onKeyPress(Key key) {
+        if (key == Key.LEFT) {
+            player.setDirection(Direction.LEFT);
+        } else if (key == Key.RIGHT) {
+            player.setDirection(Direction.RIGHT);
+        } else {
+            player.setDirection(Direction.NONE);
+        }
+
+        super.onKeyPress(key);
+    }
+
+    @Override
+    public void onTurn(int step) {
+        moveAll();
+        drawScene();
     }
 
     private void drawField() {
