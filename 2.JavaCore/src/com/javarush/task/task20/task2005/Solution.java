@@ -4,11 +4,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /* 
 Очень странные дела
 */
+
 
 public class Solution {
     public static void main(String[] args) {
@@ -48,10 +48,8 @@ public class Solution {
 
             Human human = (Human) o;
 
-//            if (human.name != null ? !name.equals(human.name) : name != null) return false;
-//            return assets != null ? assets.equals(human.assets) : human.assets == null;
-            if (!Objects.equals(name, human.name)) return false;
-            return Objects.equals(assets, human.assets);
+            if (name == null ? !name.equals(human.name) : human.name != null) return false;
+            return assets != null ? assets.equals(human.assets) : human.assets == null;
 
         }
 
@@ -59,8 +57,7 @@ public class Solution {
         public int hashCode() {
             int result = name != null ? name.hashCode() : 0;
             result = 31 * result + (assets != null ? assets.hashCode() : 0);
-//            return (int) (Math.random() * 100);
-            return result;
+            return (int) (Math.random() * 100);
         }
 
         public Human() {
