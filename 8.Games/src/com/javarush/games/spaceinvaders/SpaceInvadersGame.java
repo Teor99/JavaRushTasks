@@ -12,6 +12,7 @@ public class SpaceInvadersGame extends Game {
     public static final int HEIGHT = 64;
     private List<Star> stars;
     private EnemyFleet enemyFleet;
+    public static final int COMPLEXITY = 5;
 
     @Override
     public void initialize() {
@@ -45,7 +46,7 @@ public class SpaceInvadersGame extends Game {
 
     @Override
     public void onTurn(int step) {
-//        super.onTurn(step);
+        moveSpaceObjects();
         drawScene();
     }
 
@@ -57,5 +58,9 @@ public class SpaceInvadersGame extends Game {
         }
 
         stars.forEach(star -> star.draw(this));
+    }
+
+    private void moveSpaceObjects() {
+        enemyFleet.move();
     }
 }
