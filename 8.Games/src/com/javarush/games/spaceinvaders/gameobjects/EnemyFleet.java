@@ -20,6 +20,15 @@ public class EnemyFleet {
         createShips();
     }
 
+    public Bullet fire(Game game) {
+        if (ships.isEmpty()) return null;
+        int randomNumber = game.getRandomNumber(100 / SpaceInvadersGame.COMPLEXITY);
+        if (randomNumber > 0) return null;
+
+        int randomShipIndex = game.getRandomNumber(ships.size());
+        return ships.get(randomShipIndex).fire();
+    }
+
     private double getSpeed() {
         if (ships.isEmpty()) return 2.0;
         return Math.min(2.0, 3.0 / ships.size());
