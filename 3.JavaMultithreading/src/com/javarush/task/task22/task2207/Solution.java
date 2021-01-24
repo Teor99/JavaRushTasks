@@ -1,10 +1,7 @@
 package com.javarush.task.task22.task2207;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /* 
 Обращенные слова
@@ -14,35 +11,55 @@ public class Solution {
     public static List<Pair> result = new LinkedList<>();
 
     public static void main(String[] args) {
-        String filePath;
+        String path;
         try (BufferedReader console = new BufferedReader(new InputStreamReader(System.in))) {
-            filePath = console.readLine();
+            path = console.readLine();
         } catch (IOException e) {
             e.printStackTrace();
             return;
         }
 
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader file = new BufferedReader(new FileReader(filePath))) {
-            while (file.ready()) {
-                sb.append(file.readLine());
+        StringBuilder lines = new StringBuilder();
+        try (BufferedReader file = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = file.readLine()) != null) {
+                if (lines.length() != 0) lines.append(" ");
+                lines.append(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
             return;
         }
 
-        String[] words = sb.toString().split(" ");
+        String[] words = lines.toString().split(" ");
+        List<Integer> ignoreList = new ArrayList<>();
+
         for (int i = 0; i < words.length; i++) {
-            for (int j = i + 1; j < words.length; j++) {
+            if (ignoreList.contains(i)) continue;
+            for (int j = i+1; j < words.length; j++) {
+                if (ignoreList.contains(j)) continue;
 
+                if (words[i].equals(new StringBuilder(words[j]).reverse().toString())) {
+                    ignoreList.add(i);
+                    ignoreList.add(j);
+                    Pair pair = new Pair();
+                    pair.first = words[i];
+                    pair.second = words[j];
+                    result.add(pair);
+                    break;
+                }
             }
         }
+
+        result.forEach(System.out::println);
     }
 
     public static class Pair {
         String first;
         String second;
+
+        public Pair() {
+        }
 
         @Override
         public boolean equals(Object o) {
