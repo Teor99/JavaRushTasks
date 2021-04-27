@@ -1,9 +1,9 @@
-package com.javarush.task.task24.task2407;
+package com.javarush.task.task24.task2408;
 
 import java.util.List;
 
 /* 
-Реализация интерфейса используя локальный класс
+Как избежать Copy+Paste
 */
 
 public class Solution {

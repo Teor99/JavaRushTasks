@@ -29,7 +29,29 @@ public class Cat implements Pet {
      * @param i количество букв 'я' в слове мяу
      * @return экземпляр класса CatPet
      */
+
     public Sayable toSayable(final int i) {
-        return null;
+        if (i < 1) {
+            return new Sayable() {
+                @Override
+                public String say() {
+                    return name + " спит.";
+                }
+            };
+        } else {
+            return new Sayable() {
+                @Override
+                public String say() {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(name).append(" говорит м");
+
+                    for (int j = 0; j < i; j++) {
+                        sb.append('я');
+                    }
+
+                    return sb.append("у!").toString();
+                }
+            };
+        }
     }
 }

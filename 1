@@ -1,9 +1,12 @@
-+380501234567
-+38(050)1234567
-+38050123-45-67
-050123-4567
-+38)050(1234567
-+38(050)1-23-45-6-7
-050ххх4567
-050123456
-(0)501234567
+#INSERT INTO buyout_below_vendor
+#(item_id, item_count, bpi, SellPrice, profit, Name)
+SELECT item_id, item_count, bpi, SellPrice, (SellPrice - bpi) AS profit, item_template_locale.Name
+FROM (SELECT item_id, item_count, (buyout DIV item_count) AS bpi
+		FROM wowcircle.auction_dump
+		WHERE buyout != 0) AS ad
+	LEFT JOIN world.item_template
+    ON ad.item_id = item_template.entry
+		LEFT JOIN world.item_template_locale
+        ON ad.item_id = item_template_locale.ID
+WHERE SellPrice > bpi AND (SellPrice - bpi) > 10000 AND locale = 'ruRU'
+ORDER BY profit DESC

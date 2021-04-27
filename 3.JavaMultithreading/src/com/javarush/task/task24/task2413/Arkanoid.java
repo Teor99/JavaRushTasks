@@ -152,7 +152,7 @@ public class Arkanoid {
      * Если столкновение было - шарик отлетает в случайном направлении 0..360 градусов
      */
     void checkBricksBump() {
-        for (Brick brick : new ArrayList<Brick>(bricks)) {
+        for (Brick brick : new ArrayList<>(bricks)) {
             if (ball.isIntersec(brick)) {
                 double angle = Math.random() * 360;
                 ball.setDirection(angle);
