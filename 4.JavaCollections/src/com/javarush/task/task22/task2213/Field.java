@@ -105,23 +105,28 @@ public class Field {
      * Удаляем заполненные линии
      */
     public void removeFullLines() {
+        //Создаем список для хранения линий
+        ArrayList<int[]> lines = new ArrayList<int[]>();
 
-        int[][] tempField = new int[height][width];
-        boolean isFieldChanged = false;
-
-        for (int y = matrix.length - 1, tempY = matrix.length - 1; y >= 0; y--) {
-
-            int counter = 0;
-            for (int x = 0; x < matrix[y].length; x++) {
-                if (matrix[y][x] == 1) counter++;
+        //Копируем все непустые линии в список.
+        for (int i = 0; i < height; i++) {
+            //подсчитываем количество единиц в строке - просто суммируем все ее значения
+            int count = 0;
+            for (int j = 0; j < width; j++) {
+                count += matrix[i][j];
             }
 
-            if (matrix[y].length == counter) continue;
-
-            tempField[tempY--] = matrix[y];
-            isFieldChanged = true;
+            //Если сумма строки не равна ее ширине - добавляем в список
+            if (count != width)
+                lines.add(matrix[i]);
         }
 
-        if (isFieldChanged) matrix = tempField;
+        //Добавляем недостающие строки в начало списка.
+        while (lines.size() < height) {
+            lines.add(0, new int[width]);
+        }
+
+        //Преобразуем список обратно в матрицу
+        matrix = lines.toArray(new int[height][width]);
     }
 }
