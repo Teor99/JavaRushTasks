@@ -6,7 +6,9 @@ import com.javarush.games.spaceinvaders.ShapeMatrix;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EnemyFleet {
     private static final int ROWS_COUNT = 3;
@@ -18,6 +20,46 @@ public class EnemyFleet {
 
     public EnemyFleet() {
         createShips();
+    }
+
+    public int getShipsCount() {
+        return ships.size();
+    }
+
+    public int verifyHit(List<Bullet> bullets) {
+        if (bullets.isEmpty()) return 0;
+        int totalScore = 0;
+        for (EnemyShip enemyShip : ships) {
+            for (Bullet bullet : bullets) {
+                if (bullet.isAlive && enemyShip.isAlive && bullet.isCollision(enemyShip)) {
+                    bullet.kill();
+                    enemyShip.kill();
+                    totalScore += enemyShip.score;
+                }
+            }
+        }
+
+        return totalScore;
+    }
+
+    public double getBottomBorder() {
+        double maxY = 0.0;
+        EnemyShip es = ships.stream()
+                .max(Comparator.comparing(enemyShip -> enemyShip.y + enemyShip.height))
+                .orElse(null);
+
+        if (es != null) {
+            maxY = es.y + es.height;
+        }
+
+        return maxY;
+    }
+
+    public void deleteHiddenShips() {
+        List<EnemyShip> shipsForRemove = ships.stream()
+                .filter(enemyShip -> !enemyShip.isVisible())
+                .collect(Collectors.toList());
+        ships.removeAll(shipsForRemove);
     }
 
     public Bullet fire(Game game) {
@@ -41,6 +83,8 @@ public class EnemyFleet {
                 ships.add(new EnemyShip(x * STEP, y * STEP + 12));
             }
         }
+
+        ships.add(new Boss(STEP * COLUMNS_COUNT / 2 - ShapeMatrix.BOSS_ANIMATION_FIRST.length / 2 - 1, 5));
     }
 
     public void move() {
