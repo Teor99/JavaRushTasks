@@ -5,6 +5,7 @@ target/
 .idea/
 .idea
 .repository/
+.gradle/
 *.iml
 *.iws
 #*.jrtc
