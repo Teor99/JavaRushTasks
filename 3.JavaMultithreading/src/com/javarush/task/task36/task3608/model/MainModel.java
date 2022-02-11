@@ -7,8 +7,12 @@ import com.javarush.task.task36.task3608.model.service.UserServiceImpl;
 import java.util.List;
 
 public class MainModel implements Model {
-    private final ModelData modelData = new ModelData();
-    private final UserService userService = new UserServiceImpl();
+
+    //use helpful services
+    private UserService userService = new UserServiceImpl();
+
+    //use special object to keep data for view rendering
+    private ModelData modelData = new ModelData();
 
     @Override
     public ModelData getModelData() {
@@ -17,29 +21,44 @@ public class MainModel implements Model {
 
     @Override
     public void loadUsers() {
-        modelData.setUsers(getAllUsers());
+        List<User> users = getAllUsers();
+        //refresh model data
+        modelData.setUsers(users);
         modelData.setDisplayDeletedUserList(false);
     }
 
+    @Override
     public void loadDeletedUsers() {
         List<User> users = userService.getAllDeletedUsers();
+        //refresh model data
         modelData.setUsers(users);
         modelData.setDisplayDeletedUserList(true);
     }
 
     @Override
     public void loadUserById(long userId) {
-        modelData.setActiveUser(userService.getUsersById(userId));
-        modelData.setDisplayDeletedUserList(false);
+        User user = userService.getUsersById(userId);
+        modelData.setActiveUser(user);
     }
 
     @Override
     public void deleteUserById(long id) {
         userService.deleteUser(id);
+        List<User> users = getAllUsers();
+        //refresh model data
+        modelData.setUsers(users);
+    }
+
+    @Override
+    public void changeUserData(String name, long id, int level) {
+        userService.createOrUpdateUser(name, id, level);
         modelData.setUsers(getAllUsers());
     }
 
     private List<User> getAllUsers() {
-        return userService.filterOnlyActiveUsers(userService.getUsersBetweenLevels(1, 100));
+        //model should contain all business logic in the methods
+        List<User> allUsers = userService.getUsersBetweenLevels(1, 100);
+        allUsers = userService.filterOnlyActiveUsers(allUsers);
+        return allUsers;
     }
 }
